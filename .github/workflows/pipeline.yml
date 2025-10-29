@@ -54,25 +54,17 @@ deploy:
   needs: tests
   if: github.ref == 'refs/heads/main'
   runs-on: ubuntu-latest
-
   steps:
     - uses: actions/checkout@v4
 
-    # Instala o Heroku CLI e autentica com a API key
-    - uses: heroku/actions/setup@v2
+    - name: Setup Heroku CLI
+      uses: heroku/actions/setup@v2
       with:
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
 
-    # Ajusta o usuário do git para o push
-    - name: Configure git user
-      run: |
-        git config user.email "${{ secrets.HEROKU_USER_EMAIL }}"
-        git config user.name "github-actions[bot]"
-
-    # Adiciona o remote do Heroku (app já deve existir)
-    - name: Add Heroku remote
-      run: heroku git:remote -a ${{ secrets.HEROKU_APP_NAME }}
-
-    # Faz o deploy (push) do commit atual para o Heroku
-    - name: Deploy to Heroku
-      run: git push --force heroku HEAD:main
+    - name: Deploy via akhileshns
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+        heroku_email: ${{ secrets.HEROKU_USER_EMAIL }}
