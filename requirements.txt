@@ -1,2 +1,5 @@
 Flask==2.2.5
-gunicorn
+Werkzeug<3.0
+gunicorn==21.2.0
+pytest==7.4.4
+requests==2.32.3
